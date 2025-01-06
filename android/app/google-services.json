@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1005476390537",
+    "project_id": "blook-5caea",
+    "storage_bucket": "blook-5caea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005476390537:android:e5bb11043167ea18b6c858",
+        "android_client_info": {
+          "package_name": "com.example.blook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2zNbqyW4jXNZjK4BLkFNzshq7jmhC44s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
