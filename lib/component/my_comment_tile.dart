@@ -2,7 +2,7 @@ import 'package:blook/models/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth/auth_service.dart';
-import '../services/database/databse_provider.dart';
+import '../services/database/database_provider.dart';
 
 class MyCommentTile extends StatelessWidget {
   final Comment comment;

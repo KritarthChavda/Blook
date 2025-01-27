@@ -1,6 +1,6 @@
 import 'package:blook/firebase_options.dart';
 import 'package:blook/services/auth/auth_gate.dart';
-import 'package:blook/services/database/databse_provider.dart';
+import 'package:blook/services/database/database_provider.dart';
 import 'package:blook/themes/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

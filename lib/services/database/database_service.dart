@@ -209,6 +209,36 @@ class DatabaseService {
         .doc(userId)
         .set({});
   }
+
+  //Unblock user
+  Future<void> unblockUserInFirebase(String blockedUserId) async {
+    final currentUserId = _auth.currentUser!.uid;
+    await _db
+        .collection("Users")
+        .doc(currentUserId)
+        .collection("BlockedUser")
+        .doc(blockedUserId)
+        .delete();
+  }
+
+  //Get list of blocked user ids
+  Future<List<String>> getBlockedUidsFromFirebase() async {
+    final currentUserId = _auth.currentUser!.uid;
+    final snapshot = await _db
+        .collection("Users")
+        .doc(currentUserId)
+        .collection("BlockedUsers")
+        .get();
+
+    return snapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  //Account stuff
+
+  
+
+  // report user & post
+
   //Follow
   //Search
 }

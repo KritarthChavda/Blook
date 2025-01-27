@@ -5,7 +5,7 @@ import 'package:blook/component/my_post_tile.dart';
 import 'package:blook/helper/navigation_pages.dart';
 import 'package:blook/models/user.dart';
 import 'package:blook/services/auth/auth_service.dart';
-import 'package:blook/services/database/databse_provider.dart';
+import 'package:blook/services/database/database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

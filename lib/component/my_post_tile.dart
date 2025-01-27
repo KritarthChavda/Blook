@@ -1,7 +1,7 @@
 import 'package:blook/component/my_input_alert_box.dart';
 import 'package:blook/models/post.dart';
 import 'package:blook/services/auth/auth_service.dart';
-import 'package:blook/services/database/databse_provider.dart';
+import 'package:blook/services/database/database_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,8 +94,10 @@ class _MyPostTileState extends State<MyPostTile> {
                 ListTile(
                   leading: const Icon(Icons.flag),
                   title: const Text("Report"),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(context);
+
+                    _reportPostConfirmationBox();
                   },
                 ),
                 ListTile(
@@ -103,6 +105,7 @@ class _MyPostTileState extends State<MyPostTile> {
                   title: const Text("Block"),
                   onTap: () {
                     Navigator.pop(context);
+                    _blockUserConfirmationBox();
                   },
                 ),
               ],
@@ -110,6 +113,67 @@ class _MyPostTileState extends State<MyPostTile> {
           ),
         );
       },
+    );
+  }
+
+  //report user
+  void _reportPostConfirmationBox() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Report Message"),
+        content: Text("Are you sure you want to report this message?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+              onPressed: () async {
+                await databaseProvider.reportUser(
+                    widget.post.id, widget.post.uid);
+
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Message reported!"),
+                  ),
+                );
+              },
+              child: const Text("Report"))
+        ],
+      ),
+    );
+  }
+
+  //block user
+  void _blockUserConfirmationBox() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Block User"),
+        content: Text("Are you sure you want to block this user?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+              onPressed: () async {
+                await databaseProvider.blockUser(widget.post.uid);
+
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("User Blocked!"),
+                  ),
+                );
+              },
+              child: const Text("Block"))
+        ],
+      ),
     );
   }
 
