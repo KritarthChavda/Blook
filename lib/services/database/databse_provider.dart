@@ -101,5 +101,20 @@ class DatabaseProvider extends ChangeNotifier {
       print(e);
     }
   }
+
   //add a comment
+  Future<void> addComment(String postId, message) async {
+    //add comment in firebase
+    await _db.addCommentInFirebase(postId, message);
+    //reload comment
+    await loadComments(postId);
+  }
+
+  //delete a comment
+  Future<void> deleteComment(String commentId, postId) async {
+    //delete comment in firebase
+    await _db.deleteCommentInFirabase(commentId);
+    //reload comment
+    await loadComments(postId);
+  }
 }

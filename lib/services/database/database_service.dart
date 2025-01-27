@@ -5,7 +5,7 @@ import 'package:blook/services/auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:blook/models/Comment.dart';
+import 'package:blook/models/comment.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;
@@ -177,13 +177,37 @@ class DatabaseService {
     try {
       QuerySnapshot snapshot = await _db
           .collection("Comments")
-          .where("PostId", isEqualTo: postId)
+          .where("postId", isEqualTo: postId)
           .get();
       return snapshot.docs.map((doc) => Comment.fromDocument(doc)).toList();
     } catch (e) {
       print(e);
       return [];
     }
+  }
+
+  //report user
+  Future<void> reportUserInFirebase(String postId, userId) async {
+    final currentUserId = _auth.currentUser!.uid;
+    final report = {
+      'reportedBy': currentUserId,
+      'messageId': postId,
+      'messageOwnerId': userId,
+      'timeStamp': FieldValue.serverTimestamp(),
+    };
+    await _db.collection("Reports").add(report);
+  }
+
+  //Block User
+  Future<void> blockUserInFirebase(String userId) async {
+    final currentUserId = _auth.currentUser!.uid;
+
+    await _db
+        .collection("Users")
+        .doc(currentUserId)
+        .collection("BlockedUsers")
+        .doc(userId)
+        .set({});
   }
   //Follow
   //Search

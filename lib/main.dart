@@ -19,7 +19,6 @@ void main() async {
           create: (context) => DatabaseProvider(),
         ),
       ],
-      // test
       child: const MyApp(), 
     ),
   );
