@@ -26,8 +26,9 @@ class DatabaseProvider extends ChangeNotifier {
   //fetch all posts
   Future<void> loadAllPosts() async {
     final allPosts = await _db.getAllPostsFromFirebase();
-    final blockedUserIds = await _db.getAllPostsFromFirebase();
-    _allPosts = allPosts.where((post) => !blockedUserIds.contains(post.uid)).toList();
+    final blockedUserIds = await _db.getBlockedUidsFromFirebase();
+    _allPosts =
+        allPosts.where((post) => !blockedUserIds.contains(post.uid)).toList();
     initializeLikeMap();
     notifyListeners();
   }
@@ -53,12 +54,11 @@ class DatabaseProvider extends ChangeNotifier {
 
   int getLikeCount(String postId) => _likeCounts[postId] ?? 0;
   void initializeLikeMap() {
-    _likeCounts.clear();
     _likedPosts.clear();
     final currentUserID = _auth.getCurrentUid();
 
     for (var post in _allPosts) {
-      _likeCounts[post.id] = post.likeCount;
+      _likeCounts[post.id] == post.likeCount;
       if (post.likedBy.contains(currentUserID)) {
         _likedPosts.add(post.id);
       }

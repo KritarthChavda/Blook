@@ -57,6 +57,42 @@ class DatabaseService {
     }
   }
 
+  //Delete user info
+  Future<void> deleteUserInfoFromFirebase(String uid) async {
+    WriteBatch batch = _db.batch();
+    DocumentReference userDoc = _db.collection("Users").doc(uid);
+    batch.delete(userDoc);
+    QuerySnapshot userPosts =
+        await _db.collection("Posts").where('uid', isEqualTo: uid).get();
+    for (var post in userPosts.docs) {
+      batch.delete(post.reference);
+    }
+    QuerySnapshot userComments =
+        await _db.collection("Comments").where('uid', isEqualTo: uid).get();
+    for (var comment in userComments.docs) {
+      batch.delete(comment.reference);
+    }
+    QuerySnapshot allPosts = await _db.collection("Posts").get();
+    for (QueryDocumentSnapshot post in allPosts.docs) {
+      Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
+      var likedBy = postData['likeBy'] as List<dynamic>? ?? [];
+
+      if (likedBy.contains(uid)) {
+        batch.update(
+          post.reference,
+          {
+            'likedBy': FieldValue.arrayRemove([uid]),
+            'liked': FieldValue.increment(
+              -1,
+            )
+          },
+        );
+      }
+    }
+
+    await batch.commit();
+  }
+
   //Post Message
   Future<void> postMessageInFireBase(String message, String? photoUrl) async {
     try {
@@ -127,10 +163,13 @@ class DatabaseService {
             currentLikeCount--;
           }
           //update in firebase
-          transaction.update(postDoc, {
-            'likes': currentLikeCount,
-            'likedBy': likedBy,
-          });
+          transaction.update(
+            postDoc,
+            {
+              'likes': currentLikeCount,
+              'likedBy': likedBy,
+            },
+          );
         },
       );
     } catch (e) {
@@ -216,7 +255,7 @@ class DatabaseService {
     await _db
         .collection("Users")
         .doc(currentUserId)
-        .collection("BlockedUser")
+        .collection("BlockedUsers")
         .doc(blockedUserId)
         .delete();
   }
@@ -234,8 +273,6 @@ class DatabaseService {
   }
 
   //Account stuff
-
-  
 
   // report user & post
 

@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../helper/navigation_pages.dart';
+
 class SettingsPage extends StatelessWidget {
   final _auth = AuthService(); // Use your AuthService class
 
@@ -60,6 +62,22 @@ class SettingsPage extends StatelessWidget {
               onPressed: () => logout(context), // Use the async logout method
               tooltip: "Log out",
               color: Colors.red,
+            ),
+          ),
+          MySettingsTile(
+            title: "Blocked Users",
+            action: GestureDetector(
+              onTap: () => goToBlockedUserPage(context),
+              child: Icon(Icons.arrow_forward, color: Theme.of(context).colorScheme.primary,),
+
+            ),
+          ),
+          MySettingsTile(
+            title: "Account Settings",
+            action: IconButton(
+              onPressed: () => goAccountSettingsPage(context),
+              icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.primary,),
+
             ),
           ),
         ],

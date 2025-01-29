@@ -19,7 +19,7 @@ void main() async {
           create: (context) => DatabaseProvider(),
         ),
       ],
-      child: const MyApp(), 
+      child: const MyApp(),
     ),
   );
 }
@@ -32,7 +32,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthGate(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AuthGate(),
+      },
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }

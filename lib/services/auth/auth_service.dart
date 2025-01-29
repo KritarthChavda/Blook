@@ -1,3 +1,4 @@
+import 'package:blook/services/database/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -7,12 +8,12 @@ class AuthService {
   //get currend user and id
   User? getCurrentUser() => _auth.currentUser;
   String getCurrentUid() {
-  final user = _auth.currentUser;
-  if (user == null) {
-    throw Exception("No user is currently signed in.");
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw Exception("No user is currently signed in.");
+    }
+    return user.uid;
   }
-  return user.uid;
-}
 
   //login
   Future<UserCredential> loginEmailPassword(String email, password) async {
@@ -40,5 +41,14 @@ class AuthService {
   Future<void> logout() async {
     await _auth.signOut();
   }
+
   //delete account
+  Future<void> deleteAccpunt() async {
+    User? user = getCurrentUser();
+
+    if (user != null) {
+      await DatabaseService().deleteUserInfoFromFirebase(user.uid);
+      await user.delete();
+    }
+  }
 }

@@ -295,7 +295,7 @@ class _MyPostTileState extends State<MyPostTile> {
                         width: 5,
                       ),
                       Text(
-                        likeCount > 0 ? likeCount.toString() : '',
+                        likeCount != 0 ? likeCount.toString() : '',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
